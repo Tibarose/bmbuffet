@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="description" content="Order hot drinks, cold drinks, and snacks from the Banque Misr buffet.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#FF7043">
+  <!-- PWA meta tags for iOS and general mobile support -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="BM Buffet">
+  <link rel="apple-touch-icon" href="/bmbuffet/icons/Icon-192.png">
+
+  <!-- Base href for GitHub Pages -->
+  <base href="/bmbuffet/">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="/bmbuffet/favicon.png"/>
+
+  <!-- Preload Cairo font -->
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <title>BM Buffet</title>
+  <link rel="manifest" href="/bmbuffet/manifest.json">
+  <script src="/bmbuffet/notification_helper.js" defer></script>
+  <!-- Splash Screen Styles (unchanged) -->
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      overflow: hidden;
+      background-color: #121212;
+    }
+    .splash-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #FF7043 0%, #FF8A65 50%, #FFE0B2 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      opacity: 1;
+      transition: opacity 0.8s ease-out;
+    }
+    .splash-screen.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+    .logo-container {
+      position: relative;
+      width: 160px;
+      height: 160px;
+      animation: pulse 2s infinite ease-in-out;
+    }
+    .logo {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.3));
+      border-radius: 20px;
+    }
+    .text-container {
+      text-align: center;
+      margin-top: 20px;
+    }
+    .app-name {
+      font-family: 'Cairo', sans-serif;
+      font-size: 32px;
+      font-weight: 700;
+      color: #FFFFFF;
+      letter-spacing: 1px;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: slideUp 1s ease-out 0.5s forwards;
+    }
+    .tagline {
+      font-family: 'Cairo', sans-serif;
+      font-size: 18px;
+      font-weight: 400;
+      color: rgba(255, 255, 255, 0.9);
+      margin-top: 8px;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: slideUp 1s ease-out 0.7s forwards;
+    }
+    .developer-credit {
+      font-family: 'Cairo', sans-serif;
+      font-size: 16px;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.7);
+      margin-top: 12px;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: slideUp 1s ease-out 0.9s forwards;
+    }
+    .loader {
+      position: absolute;
+      bottom: 50px;
+      width: 50px;
+      height: 50px;
+      border: 5px solid rgba(255, 255, 255, 0.3);
+      border-top: 5px solid #FFFFFF;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    .background-shapes {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: -1;
+    }
+    .shape {
+      position: absolute;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      animation: floatShape 15s infinite ease-in-out;
+    }
+    .shape:nth-child(1) {
+      width: 200px;
+      height: 200px;
+      top: -50px;
+      left: -50px;
+      animation-delay: 0s;
+    }
+    .shape:nth-child(2) {
+      width: 150px;
+      height: 150px;
+      bottom: -30px;
+      right: -30px;
+      animation-delay: 5s;
+    }
+    .shape:nth-child(3) {
+      width: 100px;
+      height: 100px;
+      top: 20%;
+      left: 80%;
+      animation-delay: 10s;
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+    @keyframes slideUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    @keyframes floatShape {
+      0% { transform: translate(0, 0); }
+      50% { transform: translate(20px, -20px); }
+      100% { transform: translate(0, 0); }
+    }
+    @media (max-width: 600px) {
+      .logo-container { width: 120px; height: 120px; }
+      .app-name { font-size: 24px; }
+      .tagline { font-size: 14px; }
+      .developer-credit { font-size: 12px; }
+      .loader { width: 40px; height: 40px; bottom: 30px; }
+    }
+  </style>
+</head>
+<body>
+<div id="splash-screen" class="splash-screen">
+  <div class="background-shapes">
+    <div class="shape"></div>
+    <div class="shape"></div>
+    <div class="shape"></div>
+  </div>
+  <div class="logo-container">
+    <img src="/bmbuffet/icons/Icon-192.png" alt="BM Buffet Logo" class="logo" />
+  </div>
+  <div class="text-container">
+    <p id="app-name" class="app-name">BM Buffet</p>
+    <p id="tagline" class="tagline">Your Ultimate Buffet Experience</p>
+    <p id="developer-credit" class="developer-credit">Developed by Mohamed Nazmy</p>
+  </div>
+  <div class="loader"></div>
+</div>
+
+<script>
+  let deferredPrompt;
+  let isPromptAvailable = false;
+
+  // Listen for the beforeinstallprompt event
+  window.addEventListener('beforeinstallprompt', (e) => {
+    console.log('beforeinstallprompt event fired');
+    e.preventDefault();
+    deferredPrompt = e;
+    isPromptAvailable = true;
+    // Notify Flutter that the prompt is available
+    if (window.FlutterChannel) {
+      window.FlutterChannel.postMessage('promptAvailable');
+    }
+  });
+
+  // Function to show the install prompt
+  function showInstallPrompt() {
+    if (!deferredPrompt || !isPromptAvailable) {
+      console.log('No deferred prompt available');
+      return;
+    }
+    const userChoice = confirm("Would you like to install BM Buffet on your device for a better experience?");
+    if (userChoice) {
+      console.log('User clicked OK to install');
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then((choiceResult) => {
+        if (choiceResult.outcome === 'accepted') {
+          console.log('User accepted the install prompt');
+        } else {
+          console.log('User dismissed the install prompt');
+        }
+        // Clear the deferredPrompt after use
+        deferredPrompt = null;
+        isPromptAvailable = false;
+      });
+    } else {
+      console.log('User canceled the install prompt');
+      // Keep deferredPrompt for later use
+      // deferredPrompt = null;
+      // isPromptAvailable = false;
+    }
+  }
+
+  // Expose a global function to trigger the install prompt from Flutter
+  window.triggerInstallPrompt = function() {
+    console.log('triggerInstallPrompt called from Flutter');
+    showInstallPrompt();
+  };
+
+  // Service Worker Registration
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function() {
+      navigator.serviceWorker.register('/bmbuffet/flutter_service_worker.js')
+        .then(reg => console.log('Service Worker registered:', reg))
+        .catch(err => console.error('Service Worker registration failed:', err));
+    });
+  }
+
+  // Splash Screen Logic
+  window.addEventListener('flutter-first-frame', () => {
+    document.getElementById('splash-screen').classList.add('hidden');
+    setTimeout(() => {
+      document.getElementById('splash-screen').style.display = 'none';
+    }, 800);
+  });
+
+  // Locale Switching Logic
+  window.addEventListener('load', () => {
+    const savedLocale = localStorage.getItem('locale') || 'ar';
+    const appName = document.getElementById('app-name');
+    const tagline = document.getElementById('tagline');
+    const developerCredit = document.getElementById('developer-credit');
+    if (savedLocale === 'ar') {
+      appName.style.direction = 'rtl';
+      appName.textContent = 'بي إم بوفيه';
+      tagline.style.direction = 'rtl';
+      tagline.textContent = 'تجربة البوفيه المثالية';
+      developerCredit.style.direction = 'rtl';
+      developerCredit.textContent = 'تم التطوير بواسطة محمد نظمي';
+    } else {
+      appName.style.direction = 'ltr';
+      appName.textContent = 'BM Buffet';
+      tagline.style.direction = 'ltr';
+      tagline.textContent = 'Your Ultimate Buffet Experience';
+      developerCredit.style.direction = 'ltr';
+      developerCredit.textContent = 'Developed by Mohamed Nazmy';
+    }
+  });
+</script>
+
+<script src="/bmbuffet/flutter_bootstrap.js" async></script>
+</body>
+</html>

@@ -1,0 +1,41 @@
+{
+    "name": "BM Buffet",
+    "short_name": "BM Buffet",
+    "start_url": "/bmbuffet/",
+    "display": "standalone",
+    "background_color": "#FF7043",
+    "theme_color": "#FF7043",
+    "description": "Order hot drinks, cold drinks, and snacks from the Banque Misr buffet.",
+    "orientation": "portrait-primary",
+    "prefer_related_applications": false,
+    "scope": "/bmbuffet/",
+    "icons": [
+        {
+            "src": "/bmbuffet/icons/Icon-144.png",
+            "sizes": "144x144",
+            "type": "image/png"
+        },
+        {
+            "src": "/bmbuffet/icons/Icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/bmbuffet/icons/Icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        },
+        {
+            "src": "/bmbuffet/icons/Icon-maskable-192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "maskable"
+        },
+        {
+            "src": "/bmbuffet/icons/Icon-maskable-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "maskable"
+        }
+    ]
+}
